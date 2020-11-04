@@ -2,11 +2,34 @@
 * @brief Publisher file 
 * @Copyright MIT License 2020 Vishnuu
 */
+#include <ros/console.h>
+#include <beginner_tutorials/changeMsg.h>
+#include <ros/ros.h>
+#include <std_msgs/String.h>
 #include <sstream>
-#include "ros/ros.h"
-#include "std_msgs/String.h"
 
-
+std::string pubMsg;
+/** 
+* @brief Ros service server to change ros msg being published
+* @param req  Standard variable of type changeMsg::Request 
+* defined in the header file
+* @param res - Standard variable of type changeMsg::Response
+* defined in the header file
+* @return bool value
+*/
+bool changeMyMsg(beginner_tutorials::changeMsg::Request &req, \
+          const beginner_tutorials::changeMsg::Response &res) {
+  ROS_INFO("Request recieved to change string to %s", req.newMsg);
+  try {
+    pubMsg = req.newMsg;
+    ROS_INFO("Successfully changed the string");
+    return true;
+  }
+  catch (const std::exception&) {
+    ROS_INFO("Couldn't change the string");
+  }
+  return false;
+}
 /**
  * @brief This tutorial demonstrates simple sending of messages over the ROS system.
  * @param argc argv
@@ -31,7 +54,8 @@ int main(int argc, char **argv) {
    * NodeHandle destructed will close down the node.
    */
   ros::NodeHandle n;
-
+  ros::ServiceServer service = n.advertiseService("changeMsg", changeMyMsg);
+  // ros::ServiceServer service = n.advertiseService("changeMsg", changeMsg);
   /**
    * The advertise() function is how you tell ROS that you want to
    * publish on a given topic name. This invokes a call to the ROS
@@ -50,39 +74,37 @@ int main(int argc, char **argv) {
    * buffer up before throwing some away.
    */
   ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
-
-  ros::Rate loop_rate(10);
-
+  int freq = 2;
+  bool result = n.getParam("freq", freq);
+  if (result) {
+    ROS_INFO("Successfully got the param");
+  }
+  ros::Rate loop_rate(freq);
   /**
    * A count of how many messages we have sent. This is used to create
    * a unique string for each message.
    */
-  int count = 0;
-  while (ros::ok()) {
-    /**
-     * This is a message object. You stuff it with data, and then publish it.
-     */
-    std_msgs::String msg;
+  ROS_DEBUG_STREAM_ONCE("This is a Debug Stream" << " Message");
 
+  int count = 0;
+  pubMsg = "808x defualt message";
+  while (ros::ok()) {
+    std_msgs::String msg;
     std::stringstream ss;
-    ss << "808x ros-pub-sub tutorial -Vishnuu" << count;
+    ss << pubMsg << count;
     msg.data = ss.str();
 
-    ROS_INFO("%s", msg.data.c_str());
+    ROS_INFO("Talker : %s", msg.data.c_str());
 
-    /**
-     * The publish() function is how you send messages. The parameter
-     * is the message object. The type of this object must agree with the type
-     * given as a template parameter to the advertise<>() call, as was done
-     * in the constructor above.
-     */
     chatter_pub.publish(msg);
-
+    ROS_WARN_STREAM_ONCE("This is a Warn Stream" << " Message");
+    ROS_INFO_STREAM_ONCE("This is a Info Stream" << " Message");
+    ROS_ERROR_STREAM_ONCE("This is a Error Stream" << " Message");
+    ROS_FATAL_STREAM_ONCE("This is a Fatal Stream" << " Message");
     ros::spinOnce();
 
     loop_rate.sleep();
     ++count;
   }
-
   return 0;
 }

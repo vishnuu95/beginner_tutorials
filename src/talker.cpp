@@ -22,11 +22,11 @@ bool changeMyMsg(beginner_tutorials::changeMsg::Request &req, \
   ROS_INFO("Request recieved to change string to %s", req.newMsg);
   try {
     pubMsg = req.newMsg;
-    ROS_INFO("Successfully changed the string");
+    ROS_WARN("Successfully changed the string");
     return true;
   }
   catch (const std::exception&) {
-    ROS_INFO("Couldn't change the string");
+    ROS_ERROR("Couldn't change the string");
   }
   return false;
 }

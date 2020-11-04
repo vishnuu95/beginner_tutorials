@@ -2,16 +2,17 @@
 * @brief Subscriber for beginner tutorials
 * @Copyright MIT License 2020 Vishnuu AD
 */
+#include <beginner_tutorials/changeMsg.h>
+#include <ros/ros.h>
+#include <std_msgs/String.h>
 
-#include "ros/ros.h"
-#include "std_msgs/String.h"
 
 /** @brief This is the interrupt handler 
  * @param String message that arises at the interrupt
  * @return None
  */
 void chatterCallback(const std_msgs::String::ConstPtr& msg) {
-  ROS_INFO("I heard: [%s]", msg->data.c_str());
+  ROS_INFO("Listener : [%s]", msg->data.c_str());
 }
 
 /**
@@ -61,6 +62,18 @@ int main(int argc, char **argv) {
    * callbacks will be called from within this thread (the main one).  ros::spin()
    * will exit when Ctrl-C is pressed, or the node is shutdown by the master.
    */
+  ros::Duration(7.0).sleep();
+  ros::ServiceClient client =
+   n.serviceClient<beginner_tutorials::changeMsg>("changeMsg");
+  beginner_tutorials::changeMsg srv;
+  srv.request.newMsg = "I changed the message from another node";
+  if (client.call(srv)) {
+    ROS_INFO("Response received : %d", static_cast<int>(srv.response.resp));
+  } else {
+    ROS_ERROR("Failed to call service ");
+    return 1;
+  }
+
   ros::spin();
 
   return 0;

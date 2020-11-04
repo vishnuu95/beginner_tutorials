@@ -1,0 +1,48 @@
+R\+OS Beginner tutorials as part of E\+N\+P\+M808x
+
+\subsection*{Overview}
+
+
+\begin{DoxyItemize}
+\item This repo demos a simple publisher and subscriber.
+\item References were used from \href{http://wiki.ros.org/ROS/Tutorials}{\tt http\+://wiki.\+ros.\+org/\+R\+O\+S/\+Tutorials}.
+\item The only delta is a change in string message at the publisher.
+\end{DoxyItemize}
+
+\subsection*{Build Requirements}
+
+
+\begin{DoxyItemize}
+\item C\+Make
+\item catkin
+\item R\+OS -\/ Melodic
+\item Ubuntu 18.\+04
+\end{DoxyItemize}
+
+\#\# Build Instruction 
+\begin{DoxyCode}
+mkdir -p ~/catkin\_ws/src
+cd ~/catkin\_ws/
+catkin\_make
+source devel/setup.bash
+cd src/
+git clone --recursive https://github.com/vishnuu95/beginner\_tutorials.git
+cd ..
+catkin\_make
+source ~/catkin\_ws/devel/setup.bash
+\end{DoxyCode}
+
+
+\#\# Run Instruction 
+\begin{DoxyCode}
+roscore
+\end{DoxyCode}
+ In a new terminal 
+\begin{DoxyCode}
+rosrun beginner\_tutorials talker
+\end{DoxyCode}
+ In a new terminal 
+\begin{DoxyCode}
+rosrun beginner\_tutorials listener
+\end{DoxyCode}
+ 

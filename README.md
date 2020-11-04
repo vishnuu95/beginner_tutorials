@@ -11,6 +11,9 @@ ROS Beginner tutorials as part of ENPM808x
 * User can also change frequency of publish during launch.
 * Note the use of 5 levels of logging as well. 
 
+## rqt_console screenshot
+![image](https://github.com/vishnuu95/beginner_tutorials/blob/Week9_HW/rqt_console.png)
+
 ## Build Requirements
 * CMake
 * catkin

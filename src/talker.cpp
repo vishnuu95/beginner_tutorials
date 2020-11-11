@@ -90,9 +90,9 @@ int main(int argc, char **argv) {
   ROS_DEBUG_STREAM_ONCE("This is a Debug Stream" << " Message");
   tf::TransformBroadcaster br;
   tf::Transform transform;
-  transform.setOrigin(tf::Vector3(1,2,0));
+  transform.setOrigin(tf::Vector3(1, 2, 0));
   tf::Quaternion q;
-  q.setRPY(0,0,1);
+  q.setRPY(0, 0, 1);
   transform.setRotation(q);
   int count = 0;
   pubMsg = "808x defualt message";
@@ -105,7 +105,8 @@ int main(int argc, char **argv) {
     ROS_INFO("Talker : %s", msg.data.c_str());
 
     chatter_pub.publish(msg);
-    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+    br.sendTransform(tf::StampedTransform(transform,
+             ros::Time::now(), "world", "talk"));
     ROS_WARN_STREAM_ONCE("Talker : This is a Warn Stream" << " Message");
     ROS_INFO_STREAM_ONCE("Talker : This is a Info Stream" << " Message");
     ROS_ERROR_STREAM_ONCE("Talker : This is a Error Stream" << " Message");

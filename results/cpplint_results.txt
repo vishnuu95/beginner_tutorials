@@ -1,3 +1,4 @@
 Done processing ./src/listener.cpp
 Done processing ./src/talker.cpp
-Total errors found: 1
+Done processing ./test/srvTest.cpp
+Total errors found: 3

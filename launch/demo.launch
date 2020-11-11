@@ -1,6 +1,9 @@
 <launch>
   <arg name="pub_freq" default="10"/>
+  <arg name="ifRecord" default = "true"/>
   <node name="talker" pkg="beginner_tutorials" type="talker" output="screen"/>
    <param name="freq" value="$(arg pub_freq)"/>
   <node name="listener" pkg="beginner_tutorials" type="listener" output="screen"/>
+  <node pkg="rosbag" name="record" type="record" args="--duration=15 -a -O $(find beginner_tutorials)/bags/sample.bag"
+  if="$(arg ifRecord)"/>
 </launch>

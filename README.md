@@ -10,6 +10,9 @@ ROS Beginner tutorials as part of ENPM808x
    This changes the message being published which can be seen in terminal prints
 * User can also change frequency of publish during launch.
 * Note the use of 5 levels of logging as well. 
+* Added a unit testing file as well
+* Added a TF broadcaster
+* Added rosbag recording
 
 ## rqt_console screenshot
 ![image](https://github.com/vishnuu95/beginner_tutorials/blob/Week9_HW/rqt_console.png)
@@ -28,7 +31,7 @@ catkin_make
 source devel/setup.bash
 cd src/
 git clone --recursive https://github.com/vishnuu95/beginner_tutorials.git
-git checkout Week9_HW
+git checkout main
 cd ..
 catkin_make
 source ~/catkin_ws/devel/setup.bash
@@ -43,6 +46,15 @@ The above will launch the 2 nodes and the talker will publish at 10hz default.
 ```
 roslaunch beginner_tutorials demo.launch pub_freq:=<input your frequency value here as an Integer>
 ```
-The above will launch the 2 nodes and the talker will publish at the input frequency chosen by you.
-
-
+* The above will launch the 2 nodes and the talker will publish at the input frequency chosen by you. Also, a rosbag is recorded in the bags folder. The duration of record can be specified in the launch file. 
+* The above will also publish to /tf
+* To check the published transform, do a simple
+```
+rostopic echo /tf
+```
+You should see the transform with parent as "world" and child as "talk"
+```
+cd ~/catkin_make
+catkin_make run_tests_beginner_tutorials
+```
+The above will run unit tests to test the ros service that the talker has.

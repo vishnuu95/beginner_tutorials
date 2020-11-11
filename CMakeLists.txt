@@ -18,6 +18,13 @@ catkin_package()
 ## Build talker and listener
 include_directories(include ${catkin_INCLUDE_DIRS})
 
+## Add Testing related stuff
+find_package(rostest REQUIRED)
+add_rostest_gtest(mytests test/mySrvTest.test test/srvTest.cpp)
+target_link_libraries(mytests ${catkin_LIBRARIES})
+ # catkin_add_gtest(srvTests test/srvTest.cpp)
+
+
 add_executable(talker src/talker.cpp)
 target_link_libraries(talker ${catkin_LIBRARIES})
 add_dependencies(talker beginner_tutorials_generate_messages_cpp)

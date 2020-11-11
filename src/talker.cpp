@@ -5,6 +5,7 @@
 #include <ros/console.h>
 #include <beginner_tutorials/changeMsg.h>
 #include <ros/ros.h>
+#include <tf/transform_broadcaster.h>
 #include <std_msgs/String.h>
 #include <sstream>
 
@@ -17,16 +18,18 @@ std::string pubMsg;
 * defined in the header file
 * @return bool value
 */
-bool changeMyMsg(beginner_tutorials::changeMsg::Request &req, \
-          const beginner_tutorials::changeMsg::Response &res) {
+bool changeMyMsg(beginner_tutorials::changeMsg::Request &req,
+           beginner_tutorials::changeMsg::Response &res) {
   ROS_INFO("Request recieved to change string to %s", req.newMsg);
   try {
     pubMsg = req.newMsg;
     ROS_WARN("Successfully changed the string");
+    res.resp = true;
     return true;
   }
   catch (const std::exception&) {
     ROS_ERROR("Couldn't change the string");
+    res.resp = false;
   }
   return false;
 }
@@ -85,7 +88,12 @@ int main(int argc, char **argv) {
    * a unique string for each message.
    */
   ROS_DEBUG_STREAM_ONCE("This is a Debug Stream" << " Message");
-
+  tf::TransformBroadcaster br;
+  tf::Transform transform;
+  transform.setOrigin(tf::Vector3(1,2,0));
+  tf::Quaternion q;
+  q.setRPY(0,0,1);
+  transform.setRotation(q);
   int count = 0;
   pubMsg = "808x defualt message";
   while (ros::ok()) {
@@ -97,10 +105,11 @@ int main(int argc, char **argv) {
     ROS_INFO("Talker : %s", msg.data.c_str());
 
     chatter_pub.publish(msg);
-    ROS_WARN_STREAM_ONCE("This is a Warn Stream" << " Message");
-    ROS_INFO_STREAM_ONCE("This is a Info Stream" << " Message");
-    ROS_ERROR_STREAM_ONCE("This is a Error Stream" << " Message");
-    ROS_FATAL_STREAM_ONCE("This is a Fatal Stream" << " Message");
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+    ROS_WARN_STREAM_ONCE("Talker : This is a Warn Stream" << " Message");
+    ROS_INFO_STREAM_ONCE("Talker : This is a Info Stream" << " Message");
+    ROS_ERROR_STREAM_ONCE("Talker : This is a Error Stream" << " Message");
+    ROS_FATAL_STREAM_ONCE("Talker : This is a Fatal Stream" << " Message");
     ros::spinOnce();
 
     loop_rate.sleep();

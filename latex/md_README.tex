@@ -6,8 +6,15 @@ R\+OS Beginner tutorials as part of E\+N\+P\+M808x
 \begin{DoxyItemize}
 \item This repo demos a simple publisher and subscriber.
 \item References were used from \href{http://wiki.ros.org/ROS/Tutorials}{\tt http\+://wiki.\+ros.\+org/\+R\+O\+S/\+Tutorials}.
-\item The only delta is a change in string message at the publisher.
+\item This repo also demos the use of Ros service.
+\item On running demo.\+launch, after 7 seconds, the client(present in listener.\+cpp) sends a request to the server to change the message in the publisher ( in talker.\+cpp). This changes the message being published which can be seen in terminal prints
+\item User can also change frequency of publish during launch.
+\item Note the use of 5 levels of logging as well.
 \end{DoxyItemize}
+
+\subsection*{rqt\+\_\+console screenshot}
+
+
 
 \subsection*{Build Requirements}
 
@@ -27,22 +34,21 @@ catkin\_make
 source devel/setup.bash
 cd src/
 git clone --recursive https://github.com/vishnuu95/beginner\_tutorials.git
+git checkout Week9\_HW
 cd ..
 catkin\_make
 source ~/catkin\_ws/devel/setup.bash
 \end{DoxyCode}
 
 
-\#\# Run Instruction 
+\subsection*{Run Instruction}
+
+
 \begin{DoxyCode}
-roscore
+roslaunch beginner\_tutorials demo.launch
 \end{DoxyCode}
- In a new terminal 
+ The above will launch the 2 nodes and the talker will publish at 10hz default. 
 \begin{DoxyCode}
-rosrun beginner\_tutorials talker
+roslaunch beginner\_tutorials demo.launch pub\_freq:=<input your frequency value here as an Integer>
 \end{DoxyCode}
- In a new terminal 
-\begin{DoxyCode}
-rosrun beginner\_tutorials listener
-\end{DoxyCode}
- 
+ The above will launch the 2 nodes and the talker will publish at the input frequency chosen by you. 

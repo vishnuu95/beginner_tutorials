@@ -64,14 +64,13 @@ int main(int argc, char **argv) {
    */
   ros::Duration(7.0).sleep();
   ros::ServiceClient client =
-   n.serviceClient<beginner_tutorials::changeMsg>("changeMsg");
+    n.serviceClient<beginner_tutorials::changeMsg>("changeMsg");
   beginner_tutorials::changeMsg srv;
   srv.request.newMsg = "I changed the message from another node";
   if (client.call(srv)) {
     ROS_INFO("Response received : %d", static_cast<int>(srv.response.resp));
   } else {
     ROS_ERROR("Failed to call service ");
-    return 1;
   }
 
   ros::spin();
